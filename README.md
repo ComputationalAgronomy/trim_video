@@ -21,7 +21,7 @@ python video_editing.py XXXXX.txt
 ```
 
 # How It Work
-For code, please click *video_editing.py*.
+For code, please click [video_editing.py](https://github.com/ComputationalAgronomy/trim_video/blob/main/video_editing.py).
 
 Part1 of the code defines a function called "rf" which reads the data from a text file and categorizes it into a string and three lists: "input stream name", [output stream name list], [start time list], and [end time list]. The function opens the input file, reads its contents as a list of lines, extracts the input and output file names, and creates two lists to store the start and end times. 
 
