@@ -17,7 +17,7 @@ input_flie.mp4    output_file1.mp4, output_file2.mp4
 When you have completed your text file, you can use the program on the terminal according to the following code:
 
 ```cmd
-python vedio_editing.py XXXXX.txt
+python video_editing.py XXXXX.txt
 ```
 
 # How It Work
