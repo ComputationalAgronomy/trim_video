@@ -1,42 +1,63 @@
-from sys import argv
-import numpy as np
 import subprocess
+import argparse
+import sys
+import re
 import os
 
-script, input_file, = argv
+parser = argparse.ArgumentParser()
+parser.add_argument("--file", type=str, help="path to input file, must end with .txt", required = True)
+args = parser.parse_args()
+
+if args.file.endswith('.txt'):
+    if os.path.exists(args.file): pass
+    else:
+        print(f"Warning! '{args.file}' does not exist.")    
+        sys.exit()
+else:
+    print("Input file must end with '.txt'.")
+    sys.exit()
 
 ## part1
 def rf(input_file):
     """This function will read the input_file text file that is passed in,and return the 
     {input stream name}, {output stream name list}, {start time list}, and {end time list}."""
-    with open(input_file, 'r') as f:
-        ## read file as a list   
+    with open(input_file, 'r') as f:   
         lines = f.readlines()                                 
 
         ## record the file names to be input and output
-        in_stream, out_stream = lines[0].split("    ")
-        out_stream = out_stream.strip().split(", ")
+        files = re.findall(r'\b\w+\.\w+\b', lines[0])
+        in_stream, out_stream = files[0], files[1:]
 
-        ## create two zero-lists to store start and end times
-        start = []
-        end = []
         ## store time point 
-        for line in lines[1:]:
-            s, e = line.strip().split("    ")
-            start.append(s)
-            end.append(e)
+        start, end = [], []
+        for i in range(1,len(lines)):
+            time = re.findall("[0-2][0-3]:[0-5][0-9]:[0-5][0-9]", lines[i])
+            if(len(time)==2):
+                start.append(time[0])
+                end.append(time[1])
+                print(f"Successfully read the timestamp in line {i+1}.")
+            else:
+                input(f"Warning! Number of time point(s) is incorrect in line {i+1}, please correct and try again.")
+                sys.exit() 
+
+        if(len(out_stream) == len(start)):
+            print("The file has been read completely. Start processing files.....")
+        elif(len(out_stream) < len(start)):
+            will = input("Warning! The specified output files are less than the timestamp that has been read. \nAre you sure you want to continue?(y/n)")
+            if(will=="y"):print("Start processing files.....")
+            else:sys.exit()
+        else:
+            print("Warning! The specified output files are more than the timestamp that has been read, please correct and try again.")
+            sys.exit()
 
         return in_stream, out_stream, start, end
 
 ## categorize elements from input_file
-in_stream, out_stream, start, end = rf(input_file)
+in_stream, out_stream, start, end = rf(args.file)
 
 ## part2
-num_files = len(out_stream)
-print(f"\nYou're going to trim '{in_stream}' into {num_files} part(s), right?")
-input("if YES, press ENTER, rather press CTRL^C...\n")
-
-for i in range(num_files):
+num_time = len(start)
+for i in range(num_time):
     try:
         print(f"processing the {i+1}th output file...")
 
