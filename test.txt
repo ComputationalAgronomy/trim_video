@@ -1,6 +1,0 @@
-input.flac   
-00:00:03    00:00:08    output1.flac
-00:00:03    00:00:10    output2.flac
-00:00:03    00:00:15    output3.flac
-00:00:03    00:00:20    output4.flac
-00:00:03    00:00:30    output5.flac
