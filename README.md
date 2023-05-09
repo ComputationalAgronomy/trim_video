@@ -4,20 +4,19 @@ This project is for batch processing video files that allows users to quickly sp
 # Usage Instructions
 This project is designed to be used in conjunction with a text file. Therefore, the format of the text will be explained below:
 
-1. The first line of the text file should record the input file name and output file name(s), separated by a tab, where multiple output file names are separated by a comma and a space (", "). 
-2. Starting from the second line, each line records the start and end time of an output file, separated by a tab. All times should be in the format of hh:mm:ss. (PS: the number of output files and starting/ending time points must be match)
+The first line indicates the name of the input file, which should be in the format of **{filename.filetype}**. Starting from the second line, each line contains information about a time interval, including the start time, end time, and the output file name(optional). The time is specified in the format of **{hh:mm:ss}**. The output file name is optional, which should also be in the format of {filename.filetype}. If no output file name is specified, the default name will be **{output_{ith}.{input_filetype}**. The order of the time intervals and output file names will not affect the reading of the file, and the order of start and end can be corrected during program runtime even if it is inverted.
 
 Here is a sample text file:
 ```txt
-input_flie.mp4    output_file1.mp4, output_file2.mp4
-00:00:00    00:02:05
-00:01:23    00:03:21
+input_flie.mp4
+00:00:00    00:02:05    output1.mp4
+00:01:23    00:03:21    output2.mp4
 ```
 
 When you have completed your text file, you can use the program on the terminal according to the following code:
 
 ```cmd
-python video_editing.py XXXXX.txt
+python video_editing.py --file XXXX.txt
 ```
 
 # How It Work
@@ -31,3 +30,7 @@ Part2 of the code uses the ffmpeg tool to split a video file into multiple parts
 [FFmpeg Documentation](https://ffmpeg.org/ffmpeg.html)
 
 [Subprocess](https://docs.python.org/3/library/subprocess.html)
+
+[Argparse](https://docs.python.org/3/library/argparse.html)
+
+[Reg Expression](https://www.w3schools.com/python/python_regex.asp)
