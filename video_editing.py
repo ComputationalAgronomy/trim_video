@@ -17,7 +17,7 @@ def check_file(input_file):
     
     return input_file
 
-## used to generate ordinal numbers
+## used to generate ordinal numbers(taken from https://codegolf.stackexchange.com/questions/4707/outputting-ordinal-numbers-1st-2nd-3rd#answer-4712)
 ordinal = lambda n: "%d%s" % (n,"tsnrhtdd"[(n//10%10!=1)*(n%10<4)*n%10::4]) 
                                                                                      
 def read_file(input_file):
@@ -91,5 +91,3 @@ for i in range(num_time):
     except:
         
         print(f"\nsome errors occurred while generating '{output_file}'!\n")
-		 
-
