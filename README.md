@@ -2,7 +2,7 @@
 This project is for batch processing video files that allows users to quickly split a longer video file into multiple shorter parts, and the start and end time of each part are specified by a text file.
 
 # Usage Instructions
-This project is designed to be used in conjunction with a text file. Therefore, the format of the text will be explained below:
+This project is designed to be used in conjunction with a text file. Therefore, the format of the text file will be explained below:
 
 The first line indicates the name of the input file, which should be in the format of **{filename.filetype}**. Starting from the second line, each line contains information about a time interval, including the start time, end time, and the output file name(optional). The time is specified in the format of **{hh:mm:ss}**. The output file name is optional, which should also be in the format of {filename.filetype}. If no output file name is specified, the default name will be **{output_{ith}.{input_filetype}**. The order of the time intervals and output file names will not affect the reading of the file, and the order of start and end can be corrected during program runtime even if it is inverted.
 
@@ -22,9 +22,13 @@ python video_editing.py --file XXXX.txt
 # How It Work
 For code, please click [video_editing.py](https://github.com/ComputationalAgronomy/trim_video/blob/main/video_editing.py).
 
-Part1 of the code defines a function called "rf" which reads the data from a text file and categorizes it into a string and three lists: "input stream name", [output stream name list], [start time list], and [end time list]. The function opens the input file, reads its contents as a list of lines, extracts the input and output file names, and creates two lists to store the start and end times. 
+The code can be divided into three parts:
 
-Part2 of the code uses the ffmpeg tool to split a video file into multiple parts. It uses the data returned by the "rf" function and a for loop to go through all the parts of the video that need to be outputted and uses subprocess to run ffmpeg commands. If the cutting is successful, the program will output a success message. Otherwise, the program will output an error message.
+The first part defines two functions, check_file(input_file) and read_file(input_file). The check_file function checks if the file name meets the requirements and if the file exists. The read_file function reads the text file inputted by the user and extracts information such as the media file to be processed, start and end time, and output media file name. If there are issues with the timestamps, a prompt will be given and the program will terminate.
+
+The second part uses the argparse module to handle the arguments inputted by the user from the command line. The arguments are then passed to the read_file() function, and the results returned by the function are stored in variables.
+
+The third part is the main processing procedure, which uses a for loop to process each media file to be outputted, and uses the ffmpeg library for trimming and outputting. After the trimming is complete, the program checks if the output file exists. If it exists, a  message is displayed, otherwise an error message is displayed.
 
 # Technical Details
 [FFmpeg Documentation](https://ffmpeg.org/ffmpeg.html)
