@@ -47,21 +47,21 @@ def read_file(input_file):
             
             ## record the timestamps
             time = re.findall("[0-2][0-3]:[0-5][0-9]:[0-5][0-9]", lines[i])
-            ## convert hh:mm:ss strings to seconds
-            start_second, end_second = datetime.strptime(time[0], '%H:%M:%S'), datetime.strptime(time[1], '%H:%M:%S')
-
             ## check whether timestamp make sense
-            if len(time) == 2 and start_second < end_second:
-                start.append(time[0]), end.append(time[1])
-                print(f"Successfully read the timestamp on the {ordinal(i+1)} line.")
-            elif len(time)==2 and start_second >= end_second:
-                will = input(f"Warning! The start time of line {i+1} is later than the end time.\nStart:[{time[0]}] End:[{time[1]}]\nDo you want to swap them and continue?(y/n)")
-                if(will=="y"):
-                    start.append(time[1]), end.append(time[0])
-                    print("Swapping completed.")
+            if time and len(time) == 2:
+                start_second, end_second = datetime.strptime(time[0], '%H:%M:%S'), datetime.strptime(time[1], '%H:%M:%S')
+                if start_second <= end_second:
+                    start.append(time[0]), end.append(time[1])
+                    print(f"Successfully read the timestamp on the {ordinal(i+1)} line.")
                 else:
-                    sys.exit()
-            else:raise ValueError(f"Number of time point(s) is incorrect in line {i+1}, please correct and try again.")
+                    will = input(f"Warning! The start time of line {i+1} is later than the end time.\nStart:[{time[0]}] End:[{time[1]}]\nDo you want to swap them and continue?(y/n)")
+                    if(will=="y"):
+                        start.append(time[1]), end.append(time[0])
+                        print("Swapping completed.")
+                    else:
+                        sys.exit()
+            else:
+                raise ValueError(f"Warning! Number of timestamp is incorrect in line {i+1}, please correct and try again.")
 
         return in_stream, out_stream, start, end
 
@@ -84,9 +84,11 @@ for i in range(num_time):
             output_file = out_stream[i]
 
         print(f"processing the {ordinal(i+1)} output file...")
-        cmd = f"ffmpeg -y -i {in_stream} -ss {start[i]} -to {end[i]} {output_file}"
+        cmd = f"ffmpeg -i {in_stream} -ss {start[i]} -to {end[i]} -c:a copy -c:v copy {output_file}"
         subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
         if os.path.exists(output_file):
             print(f"'{output_file}' created successfully!")
+        else:
+            raise FileNotFoundError(f"\nsome errors occurred while generating '{output_file}'!\n")
     except:
         print(f"\nsome errors occurred while generating '{output_file}'!\n")
