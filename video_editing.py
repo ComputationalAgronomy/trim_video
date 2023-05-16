@@ -49,8 +49,8 @@ def read_file(input_file):
             time = re.findall("[0-2][0-3]:[0-5][0-9]:[0-5][0-9]", lines[i])
             ## check whether timestamp make sense
             if time and len(time) == 2:
-                start_second, end_second = datetime.strptime(time[0], '%H:%M:%S'), datetime.strptime(time[1], '%H:%M:%S')
-                if start_second <= end_second:
+                start_obj, end_obj = datetime.strptime(time[0], '%H:%M:%S'), datetime.strptime(time[1], '%H:%M:%S')
+                if start_obj <= end_obj:
                     start.append(time[0]), end.append(time[1])
                     print(f"Successfully read the timestamp on the {ordinal(i+1)} line.")
                 else:
