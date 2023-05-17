@@ -1,7 +1,15 @@
-# Introduction
+- [Introduction](#Introduction)
+- [Usage Instructions](#Usage_Instructions)
+- [How It Work](#How_It_Work)
+- [Technical Details](#Technical_Details)
+
+<a name="Introduction"></a>
+## Introduction
 This project is for batch processing video files that allows users to quickly split a longer video file into multiple shorter parts, and the start and end time of each part are specified by a text file.
 
-# Usage Instructions
+
+<a name="Usage_Instructions"></a>
+## Usage Instructions
 This project is designed to be used in conjunction with a text file. Therefore, the format of the text file will be explained below:
 
 The first line indicates the name of the input file, which should be in the format of **{filename.filetype}**. Starting from the second line, each line contains information about a time interval, including the start time, end time, and the output file name(optional). The time is specified in the format of **{hh:mm:ss}**. The output file name is optional, which should also be in the format of {filename.filetype}. If no output file name is specified, the default name will be **{output_{ith}.{input_filetype}**. The order of the time intervals and output file names will not affect the reading of the file, and the order of start and end can be corrected during program runtime even if it is inverted.
@@ -19,7 +27,8 @@ When you have completed your text file, you can use the program on the terminal 
 python video_editing.py --file XXXX.txt
 ```
 
-# How It Work
+<a name="How_It_Work"></a>
+## How It Work
 For code, please click [video_editing.py](https://github.com/ComputationalAgronomy/trim_video/blob/main/video_editing.py).
 
 The code can be divided into three parts:
@@ -30,7 +39,8 @@ The second part uses the argparse module to handle the arguments inputted by the
 
 The third part is the main processing procedure, which uses a for loop to process each media file to be outputted, and uses the ffmpeg library for trimming and outputting. After the trimming is complete, the program checks if the output file exists. If it exists, a  message is displayed, otherwise an error message is displayed.
 
-# Technical Details
+<a name="Technical_Details"></a>
+## Technical Details
 [FFmpeg Documentation](https://ffmpeg.org/ffmpeg.html)
 
 [Subprocess](https://docs.python.org/3/library/subprocess.html)
